@@ -1,0 +1,268 @@
+-   config:
+        name: testset description
+        request:
+            base_url: ''
+            headers:
+                User-Agent: !!python/unicode 'Mozilla/5.0 (Macintosh; Intel Mac OS
+                    X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79
+                    Safari/537.36'
+        variables: []
+-   test:
+        name: entrytask_base_case
+        request:
+            method: !!python/unicode 'GET'
+            params:
+                !!python/unicode 'a': !!python/unicode '1'
+                !!python/unicode 'b': !!python/unicode '"lily"'
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '0'
+        -   eq:
+            - content.err_msg
+            - success
+        -   eq:
+            - content.reference
+            - "param is:a=1 and b=\"lily\""
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'
+-   test:
+        name: entrytask_has_no_param
+        request:
+            method: !!python/unicode 'GET'
+            params:
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '21'
+        -   eq:
+            - content.err_msg
+            - !!python/unicode 'empty or wrong param'
+        -   eq:
+            - content.reference
+            - "null"
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'
+-   test:
+        name: entrytask_has_has_more_than_2_param
+        request:
+            method: !!python/unicode 'GET'
+            params:
+                !!python/unicode 'a': !!python/unicode '1'
+                !!python/unicode 'b': !!python/unicode '"lily"' 
+                !!python/unicode 'c': !!python/unicode 'yangy' 
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '21'
+        -   eq:
+            - content.err_msg
+            - !!python/unicode 'empty or wrong param'
+        -   eq:
+            - content.reference
+            - "null"
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'
+-   test:
+        name: entrytask_has_has_less_than_2_param
+        request:
+            method: !!python/unicode 'GET'
+            params:
+                !!python/unicode 'a': !!python/unicode '1'
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '21'
+        -   eq:
+            - content.err_msg
+            - !!python/unicode 'empty or wrong param'
+        -   eq:
+            - content.reference
+            - "null"
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'
+-   test:
+        name: entrytask_not_has_valid_param
+        request:
+            method: !!python/unicode 'GET'
+            params:
+                !!python/unicode 'c': !!python/unicode '1'
+                !!python/unicode 'b': !!python/unicode '"lily"'
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '21'
+        -   eq:
+            - content.err_msg
+            - !!python/unicode 'empty or wrong param'
+        -   eq:
+            - content.reference
+            - "null"
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'
+-   test:
+        name: entrytask_a_is_not_int
+        request:
+            method: !!python/unicode 'GET'
+            params:
+                !!python/unicode 'a': !!python/unicode '14.121'
+                !!python/unicode 'b': !!python/unicode '"lily"'
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '21'
+        -   eq:
+            - content.err_msg
+            - !!python/unicode 'empty or wrong param'
+        -   eq:
+            - content.reference
+            - "null"
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'
+-   test:
+        name: entrytask_a_is_exceed_limit
+        request:
+            method: !!python/unicode 'GET'
+            params:
+                !!python/unicode 'a': !!python/unicode '9223372036854775808'
+                !!python/unicode 'b': !!python/unicode '"lily"'
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '21'
+        -   eq:
+            - content.err_msg
+            - !!python/unicode 'empty or wrong param'
+        -   eq:
+            - content.reference
+            - "null"
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'
+-   test:
+        name: entrytask_a_has_minus_sign
+        request:
+            method: !!python/unicode 'GET'
+            params:
+                !!python/unicode 'a': !!python/unicode '-1'
+                !!python/unicode 'b': !!python/unicode '"lily"'
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '21'
+        -   eq:
+            - content.err_msg
+            - !!python/unicode 'empty or wrong param'
+        -   eq:
+            - content.reference
+            - "null"
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'
+-   test:
+        name: entrytask_a_is_null
+        request:
+            method: !!python/unicode 'GET'
+            params:
+                !!python/unicode 'a': !!python/unicode ''
+                !!python/unicode 'b': !!python/unicode '"lily"'
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '21'
+        -   eq:
+            - content.err_msg
+            - !!python/unicode 'empty or wrong param'
+        -   eq:
+            - content.reference
+            - "null"
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'
+-   test:
+        name: entrytask_b_is_null
+        request:
+            method: !!python/unicode 'GET'
+            params:
+                !!python/unicode 'a': !!python/unicode '1'
+                !!python/unicode 'b': !!python/unicode '""'
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '21'
+        -   eq:
+            - content.err_msg
+            - !!python/unicode 'empty or wrong param'
+        -   eq:
+            - content.reference
+            - "null"
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'
+-   test:
+        name: entrytask_b_has_chinaword
+        request:
+            method: !!python/unicode 'GET'
+            params:
+                !!python/unicode 'a': !!python/unicode '1'
+                !!python/unicode 'b': '"丽丽"'
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '0'
+        -   eq:
+            - content.err_msg
+            - !!python/unicode 'success'
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'

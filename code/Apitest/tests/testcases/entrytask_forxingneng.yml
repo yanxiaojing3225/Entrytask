@@ -1,0 +1,57 @@
+-   config:
+        name: testset description
+        request:
+            base_url: ''
+            headers:
+                User-Agent: !!python/unicode 'Mozilla/5.0 (Macintosh; Intel Mac OS
+                    X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79
+                    Safari/537.36'
+        variables: []
+-   test:
+        name: entrytask_base_case
+        request:
+            method: !!python/unicode 'GET'
+            params:
+                !!python/unicode 'a': !!python/unicode '1'
+                !!python/unicode 'b': !!python/unicode '"lily"'
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '0'
+        -   eq:
+            - content.err_msg
+            - success
+        -   eq:
+            - content.reference
+            - "param is:a=1 and b=\"lily\""
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'
+-   test:
+        name: entrytask_base_case_other
+        request:
+            method: !!python/unicode 'GET'
+            params:
+                !!python/unicode 'a': !!python/unicode '99999'
+                !!python/unicode 'b': !!python/unicode '"yanxiaojing"'
+            url: !!python/unicode 'http://localhost:5000/shopee/test'
+        validate:
+        -   eq:
+            - status_code
+            - 200
+        -   eq:
+            - content.err_code
+            - !!python/unicode '0'
+        -   eq:
+            - content.err_msg
+            - success
+        -   eq:
+            - content.reference
+            - "param is:a=99999 and b=\"yanxiaojing\""
+        -   eq:
+            - headers.Content-Type
+            - !!python/unicode 'text/html; charset=utf-8'

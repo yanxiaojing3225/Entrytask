@@ -1,0 +1,18 @@
+- config:
+    name: demo-login-logoff
+    request:
+        base_url: http://10.12.112.7:5000/
+        headers:
+            Accept: application/json
+            User-Agent: iOS/10.3
+
+- test:
+    name: Login
+    request:
+        url: /shopee/test
+        method: GET
+        json:
+            a: 1
+            b: "xiaojing"
+    validators:
+        - eq: ["err_code", 0]
